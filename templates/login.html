@@ -1,0 +1,213 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="login">
+        <img src="https://png.pngitem.com/pimgs/s/20-203432_profile-icon-png-image-free-download-searchpng-ville.png" />
+        <h1>Login Page</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" class="username" placeholder="username"> <br>
+            <input type="password" name="password" class="password" placeholder="password"> <br>
+            <input type="Submit" class="btn btn-primary mb-3">
+
+        </form>
+        <div class="alert alert-danger" role="alert">
+            {% for message in messages %}
+            <h3> {{message}} </h3>
+            {% endfor %}
+        </div>
+
+    </div>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-image: url(https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGJsb2d8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80);
+            background-position: center;
+        }
+        
+        .login {
+            width: 300px;
+            box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+            background: #fff;
+            padding: 20px;
+            margin: 8% auto 0;
+            text-align: center;
+        }
+        
+        .login h1 {
+            color: #1c8adb;
+            margin-bottom: 30px;
+        }
+        
+        .username {
+            border-radius: 20px;
+            padding: 10px;
+            margin: 10px 0;
+            width: 90%;
+            border: 1px solid #999;
+            outline: none;
+        }
+        
+        .password {
+            border-radius: 20px;
+            padding: 10px;
+            margin: 10px 0;
+            width: 90%;
+            border: 1px solid #999;
+            outline: none;
+        }
+        
+        img {
+            width: 70px;
+            margin-top: -50px;
+        }
+    </style>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+<!--  
+<body>
+    <form  method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="username"> <br>
+        <input type="text" name="password" placeholder="password"> <br>
+        <input type="Submit">
+
+    </form>
+
+    <div>
+        {% for message in messages %}
+        <h3> {{message}} </h3> 
+        {% endfor %}
+    </div>
+</body>
+--> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-image: url("https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGJsb2d8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80");
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .login {
+            width: 360px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            margin: 8% auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .login img {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+
+        .login h1 {
+            color: #34495e;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .login input {
+            border-radius: 25px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            width: 85%;
+            border: 1px solid #ddd;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .login input:focus {
+            border-color: #1c8adb;
+        }
+
+        .login .btn-primary {
+            background-color: #1c8adb;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login .btn-primary:hover {
+            background-color: #0d6efd;
+        }
+
+        .alert-danger {
+            margin-top: 20px;
+            background-color: #ffdddd;
+            border: 1px solid #f5c2c2;
+            color: #d8000c;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: inline-block;
+            width: 85%;
+        }
+
+        .alert-danger h3 {
+            margin: 0;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login">
+        <img src="https://png.pngitem.com/pimgs/s/20-203432_profile-icon-png-image-free-download-searchpng-ville.png" alt="User Icon">
+        <h1>Login</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" class="btn-primary" value="Login">
+        </form>
+        {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+            <h3>{{ message }}</h3>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

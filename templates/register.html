@@ -1,0 +1,209 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <title>Register</title>
+</head>
+
+<body>
+    <center>
+        <div class=" registerBlock mx-auto" style="width: 400px;">
+
+
+            <h1 style="text-align:center">Register</h1>
+
+            <div class='form-group'>
+                <form method="POST">
+                    {% csrf_token %} {% for field in registration_form %}
+
+                    <p class="inputfields">
+
+                        {{field.label_tag}} {{field}}{% for error in field.errors %}
+                        <center>
+                            <p> {{error}} </p>
+                        </center>
+                        {% endfor %}
+
+                    </p>
+
+                    {% endfor %}
+                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <button type="submit" class="registerButton">Register</button>
+
+                </form>
+            </div>
+        </div>
+    </center>
+
+    <style>
+        @font-face {
+            font-family: Century gothic, Arial, Times New Roman;
+            src: url(sansation_light.woff);
+        }
+        
+        h1 {
+            font-family: Century gothic, sans-serif;
+            color: navy;
+            font-size: 40px;
+        }
+        
+        .inputfields {
+            margin-top: 20px;
+        }
+        
+        .registerButton {
+            background-color: rgb(52, 52, 189);
+            color: white;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-size: 20px;
+            border-radius: 20px;
+        }
+        
+        body {
+            background-image: url("https://images.unsplash.com/photo-1517315003714-a071486bd9ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGFlc3RoZXRpYyUyMHNreXxlbnwwfHwwfHw%3D&w=1000&q=80");
+            background-repeat: no-repeat;
+            background-size: 1900px 800px;
+        }
+        
+        .registerBlock {
+            background-color: aliceblue;
+            border-radius: 20px;
+            padding: 10px 0px 10px 0px;
+            margin-top: 150px;
+        }
+        
+        * {
+            font-family: Century gothic;
+        }
+    </style>
+</body>
+
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Register</title>
+    <style>
+        body {
+            background-image: url("https://images.unsplash.com/photo-1517315003714-a071486bd9ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGFlc3RoZXRpYyUyMHNreXxlbnwwfHwwfHw%3D&w=1000&q=80");
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .registerBlock {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 400px;
+            border-radius: 15px;
+            padding: 30px 20px;
+            margin-top: 100px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: 'Libre Baskerville', serif;
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .inputfields {
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #34495e;
+        }
+
+        .registerButton {
+            background-color: #34495e;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .registerButton:hover {
+            background-color: #2c3e50;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: -10px;
+        }
+
+        center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <div class="registerBlock">
+            <h1>Register</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% for field in registration_form %}
+                    <div class="inputfields">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% for error in field.errors %}
+                        <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="registerButton">Register</button>
+            </form>
+        </div>
+    </center>
+</body>
+
+</html>

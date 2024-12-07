@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %} MITBloggers {% endblock title %}
+
+{% block body %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'landingpage.css' %}">
+
+<br><br>
+<center>
+    <ul style="list-style: none; padding: 0;">
+        {% for post in object_list %}
+        <div class="card post-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <h6 class="author-info">By {{ post.author.first_name }} {{ post.author.last_name }}</h6>
+                <div class="post-details">
+                    <p class="post-date">Posted on: {{ post.post_date|date:"F d, Y" }}</p>
+                    <p class="likes-info">{{ total_likes }} Likes</p>
+                </div>
+                <hr class="divider">
+                <div class="post-content">
+                     {% if post.header_image %}
+                    <img src="{{ post.header_image.url }}" alt="Post Header Image" class="post-image">
+                    {% endif %}
+                    <p class="card-text">{{ post.body|slice:"5000"|safe }}</p>
+                    
+                    <!-- Debugging: Print post.pk to check if it renders correctly -->
+                    <p class="debug-info">Post ID: {{ post.pk }}</p>
+                    
+                    <!-- Button to open the post -->
+                    <a href="{% url 'detail' post.pk %}" class="btn btn-primary open-btn">Open</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+</center>
+
+<center>
+    <p class="btn btn-primary back-to-top-btn">
+        <a href="#" class="back-to-top-link">Back to top</a>
+    </p>
+</center>
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: linear-gradient(145deg, #d7eaf7, #ffffff); /* Light blue gradient background */
+        margin: 0;
+        padding: 0;
+    }
+
+    .post-card {
+        background: linear-gradient(145deg, #4a90e2, #003f91); /* Light blue to dark blue */
+        color: white;
+        border-radius: 15px;
+        width: 70%;
+        margin: 20px auto;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1), inset 0px 1px 4px rgba(255, 255, 255, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding: 20px;
+    }
+
+    .post-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2), inset 0px 1px 5px rgba(255, 255, 255, 0.4);
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #e3f2fd;
+        margin-bottom: 10px;
+    }
+
+    .author-info {
+        font-size: 14px;
+        color: #cfe8fc;
+        margin-bottom: 15px;
+    }
+
+    .post-details {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #a3cce9;
+        margin-bottom: 10px;
+    }
+
+    .post-content {
+        background: #f5fafd;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.1);
+        color: #003f91;
+    }
+
+    .card-text {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .post-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background: linear-gradient(145deg, #1e88e5, #1565c0); /* Button gradient */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 25px;
+        font-size: 14px;
+        text-decoration: none;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(145deg, #1565c0, #1e88e5);
+        transform: scale(1.05);
+    }
+
+    .back-to-top-btn {
+        background: linear-gradient(145deg, #1565c0, #1e88e5); /* Button gradient */
+        color: white;
+        margin-top: 20px;
+        padding: 10px 20px;
+        border-radius: 25px;
+        display: inline-block;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-to-top-link {
+        color: white;
+        text-decoration: none;
+    }
+
+    .divider {
+        border: none;
+        height: 2px;
+        background: linear-gradient(to right, #4a90e2, #003f91);
+        margin: 15px 0;
+    }
+
+    @media (max-width: 768px) {
+        .post-card {
+            width: 90%;
+        }
+
+        .card-title {
+            font-size: 18px;
+        }
+
+        .card-text {
+            font-size: 14px;
+        }
+    }
+</style>
+{% endblock body %}

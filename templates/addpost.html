@@ -1,0 +1,113 @@
+{% extends "base.html" %} 
+{% block body %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+
+<div class="form-container mx-auto">
+    <h1>Add Blog</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <br>
+        <div class="button-group">
+            <button class="btn btn-post">Post</button>
+            <a class="btn btn-back" href="{% url 'landing' %}">Back</a>
+        </div>
+    </form>
+</div>
+
+<!-- Script for pre-filling the user ID -->
+<script>
+    var name = "{{ user.id }}";
+    document.getElementById('temp').value = name;
+</script>
+
+<style>
+    body {
+        background-color: #f4f4f9;
+        font-family: 'Libre Baskerville', serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    h1 {
+        font-family: 'Libre Baskerville', serif;
+        color: #ffffff;
+        font-weight: bolder;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        width: 90%;
+        max-width: 800px;
+        margin: 50px auto;
+        background: linear-gradient(to bottom right, #0078ff, #530b54); /* Blue to Light Blue Gradient */
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        color: white;
+        text-align: left;
+    }
+
+    .form-container form {
+        margin: 0;
+    }
+
+    .form-container .button-group {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 18px;
+        border-radius: 25px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .btn-post {
+        background-color: #1abc9c;
+        color: white;
+    }
+
+    .btn-post:hover {
+        background-color: #16a085;
+    }
+
+    .btn-back {
+        background-color: #3498db;
+        color: white;
+        margin-left: 15px;
+        text-decoration: none;
+        display: inline-block;
+        padding: 10px 20px;
+    }
+
+    .btn-back:hover {
+        background-color: #2980b9;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .btn {
+            font-size: 16px;
+        }
+    }
+</style>
+{% endblock body %}

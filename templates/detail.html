@@ -1,0 +1,499 @@
+{% extends 'base.html' %}
+{% comment %} {% extends 'base.html' %} {% block body %}
+<br>
+<div class="card mb-3 profile-block">
+    <div class="row g-0">
+        <div class="col-md-4">
+            &nbsp; &nbsp; &nbsp; {% if post.author.profile.profile_pic %}
+
+            <img src="{{post.author.profile.profile_pic.url}}" width=1 00 height=1 00 class=" rounded-circle"> {% else %}
+
+            <img src="https://iconape.com/wp-content/png_logo_vector/user-circle.png" width=1 00 height=1 00 class=" rounded-circle"> {% endif %}
+
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title title-heading">{{post.title}}</h5>
+                <p class="card-text author-name">By: {{post.author.first_name}} {{post.author.last_name}} ({{post.author}})</p>
+                <p class="card-text"><small class="text-muted likes-date">{{total_likes}}Likes  .  {{post.post_date}}</small></p>
+                {% comment %} <a class="visit-profile" href="{% url 'show_profile' post.author.profile.id %}">Visit Profile</a> {% endcomment %}
+{% comment %} 
+{% if post.author.profile %}
+    <a class="visit-profile" href="{% url 'show_profile' post.author.profile.id %}">Visit Profile</a>
+{% else %}
+    <p>Profile not available</p>
+{% endif %}
+
+                <a href="{% url 'detail' post.pk %}" class="btn btn-primary" style="float: right; background-color: #34495e; color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none;">
+                    Open
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  
+<h1 style="text-align: center;">{{post.title}}</h1>
+
+
+<h6 style="font-style: italic; text-align: center;">By: {{post.author.first_name}} {{post.author.last_name}} ({{post.author}})</h6>
+<h6 style="text-align: center;">{{total_likes}}Likes  .  {{post.post_date}}</h6> 
+  
+
+-->
+
+
+<hr>
+<center>
+    <div class="alert alert-light" role="alert" id="postbody">
+
+        {% if post.header_image %}
+        <img src=" {{post.header_image.url}} " style="height: 10rem; width: 27rem; "> <br><br> {% endif %} {{post.body|safe}}
+    </div>
+</center>
+
+<hr>
+<div class="comments-section">
+    <h2>Comments Section</h2>
+
+    {% if not post.comments.all %}
+    <a href="{% url 'comment' post.pk %}"> Add a Comment</a> {% else %}
+    <a href="{% url 'comment' post.pk %}"> Add a Comment</a> <br> {% for comment in post.comments.all %}
+    <strong style="color: rgb(68, 0, 0);">
+        {{ comment.name}} -
+        {{ comment.date_added }}
+      </strong>
+    <br>
+    <p style="color: rgb(3, 20, 36);">
+        {{ comment.body}}
+    </p>
+    {% endfor %} {% endif %}
+</div>
+
+
+<br><br>
+<form class="buttons" action="{% url 'like_post' post.pk %}" method="POST">
+    {% csrf_token %} {% if liked %}
+    <button type="submit" , name="post_id" , value="{{post.id }}" , class="btn btn-danger small">Unlike </button> {% else %}
+    <button type="submit" , name="post_id" , value="{{post.id }}" , class="btn btn-success small"> Like </button> {% endif %}
+    <a style="padding: 8px; background-color: rgb(52, 52, 189); border-color: rgb(52, 52, 189);" class="btn button-class" href="{% url 'landing' %}">Back</a> {% if user.id == post.author.id %}
+    <a class="btn btn-group-sm btn-lg button-class" href="{% url 'delete' post.pk %}">Delete Post</a>
+    <a class="btn btn-group-sm btn-lg button-class" href="{% url 'edit' post.pk %}">Edit Post</a> {% endif %}
+</form>
+
+<br><br>
+
+<br>
+
+<style>
+    @font-face {
+        font-family: Century gothic, Arial, Times New Roman;
+        src: url(sansation_light.woff);
+    }
+    
+    .profile-block {
+        margin: auto;
+        width: 50%;
+        background: linear-gradient(grey, white);
+        border-radius: 150px;
+    }
+    
+    .title-heading {
+        color: rgb(38, 38, 190);
+        font-size: 30px;
+        font-weight: bold;
+    }
+    
+    .author-name {
+        color: black;
+    }
+    
+    .likes-date {
+        color: black;
+    }
+    
+    .visit-profile {
+        color: teal;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    .comments-section {
+        text-align: center;
+        background-color: aliceblue;
+        border-radius: 20px;
+        margin: 0px 75px;
+    }
+    
+    .comments-section h2 {
+        font-family: Century gothic, sans-serif;
+        font-weight: bolder;
+    }
+    
+    .comments-section a {
+        text-decoration: none;
+        color: rgb(48, 146, 233);
+    }
+    
+    #postbody {
+        width: 85rem;
+        margin: auto;
+    }
+    
+    .buttons {
+        text-align: center;
+        color: white;
+        font-family: Century gothic, sans-serif;
+    }
+    
+    .buttons button {
+        background-color: rgb(29, 151, 29);
+        font-size: 15px;
+        padding: 8px;
+        border-color: rgb(29, 151, 29);
+    }
+    
+    .button-class {
+        background-color: brown;
+        color: white;
+        font-size: 15px;
+        border-color: brown;
+    }
+</style>
+
+{% endblock body %} {% endcomment %} 
+
+
+{% block body %}
+<br>
+
+<!-- Profile Block -->
+<div class="card mb-3 profile-block">
+    <div class="row g-0">
+        <div class="col-md-4 text-center">
+            {% if post.author.profile.profile_pic %}
+            <img src="{{ post.author.profile.profile_pic.url }}" class="rounded-circle profile-pic">
+            {% else %}
+            <img src="https://iconape.com/wp-content/png_logo_vector/user-circle.png" class="rounded-circle profile-pic">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title title-heading">{{ post.title }}</h5>
+                <p class="card-text author-name">By: <span>{{ post.author.first_name }} {{ post.author.last_name }} ({{ post.author }})</span></p>
+                <p class="card-text"><small class="text-muted likes-date">{{ total_likes }} Likes  .  {{ post.post_date }}</small></p>
+                
+                {% if post.author.profile %}
+                <a class="visit-profile btn btn-primary" href="{% url 'show_profile' post.author.profile.id %}">Visit Profile</a>
+                {% else %}
+                <p class="no-profile">Profile not available</p>
+                {% endif %}
+
+                {% comment %} <a href="{% url 'detail' post.pk %}" class="btn btn-primary float-end">Open</a> {% endcomment %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<!-- Post Body -->
+<center>
+    <div class="alert alert-light post-body-alert" role="alert" id="postbody">
+        {% if post.header_image %}
+        <img src="{{ post.header_image.url }}" class="post-image"> <br><br>
+        {% endif %}
+        {{ post.body | safe }}
+    </div>
+</center>
+
+<hr>
+
+<!-- Comments Section -->
+{% comment %} <div class="comments-section">
+    <h2>Comments Section</h2>
+
+    <a href="{% url 'comment' post.pk %}" class="btn">Add a Comment</a>
+
+    {% for comment in post.comments.all %}
+    <div class="comment">
+        <strong>{{ comment.name }} - {{ comment.date_added }}</strong>
+        <p>{{ comment.body }}</p>
+    </div>
+    {% endfor %}
+</div> {% endcomment %}
+
+<div class="comments-section">
+    <h2>Comments Section</h2>
+    <a href="{% url 'comment' post.pk %}" class="btn">Add a Comment</a>
+
+    {% for comment in post.comments.all %}
+    <div class="comment">
+        <strong>{{ comment.name }} - {{ comment.date_added }}</strong>
+        <p>{{ comment.body }}</p>
+
+        {% if user.is_authenticated and comment.name == user.username or post.author == user %}
+        <form action="{% url 'delete_comment' comment.id %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+{% comment %} <div class="comments-section">
+    <h2>Comments Section</h2>
+    <a href="{% url 'comment' post.pk %}" class="btn">Add a Comment</a>
+
+    {% for comment in post.comments.all %}
+    <div class="comment">
+        <strong>{{ comment.name }} - {{ comment.date_added }}</strong>
+        <p>{{ comment.body }}</p>
+
+        {% if user.is_authenticated and comment.name == user.username or post.author == user %}
+        <form action="{% url 'delete_comment' comment.id %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div> {% endcomment %}
+<br><br>
+
+<!-- Like Button and Actions -->
+<form class="buttons" action="{% url 'like_post' post.pk %}" method="POST">
+    {% csrf_token %}
+    {% if liked %}
+    <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger small">Unlike</button>
+    {% else %}
+    <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-success small">Like</button>
+    {% endif %}
+
+    <a href="{% url 'landing' %}" class="btn button-class">Back</a>
+
+    {% if user.id == post.author.id %}
+    <a href="{% url 'delete' post.pk %}" class="btn btn-danger small delete-btn">Delete Post</a>
+    <a href="{% url 'edit' post.pk %}" class="btn btn-warning small edit-btn">Edit Post</a>
+    {% endif %}
+</form>
+
+<br><br>
+
+<!-- Styles -->
+<style>
+    body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .profile-block {
+        width: 75%;
+        margin: auto;
+        background: linear-gradient(to bottom, #f0f8ff, #ffffff);
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+    .profile-pic:hover {
+        transform: scale(1.1);
+    }
+    .btn-danger {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    .btn-danger:hover {
+        background-color: #c0392b;
+    }
+    
+    .title-heading {
+        color: #1abc9c;
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .author-name {
+        color: #2c3e50;
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .likes-date {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    .visit-profile {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .visit-profile:hover {
+        text-decoration: underline;
+    }
+
+    .post-body-alert {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-image {
+        width: 100%;
+        max-width: 800px;
+        height: auto;
+        border-radius: 15px;
+        margin-bottom: 20px;
+    }
+
+    .comments-section {
+        text-align: center;
+        background-color: #eaf4f4;
+        border-radius: 15px;
+        padding: 30px;
+        margin: 30px auto;
+        max-width: 800px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .comments-section h2 {
+        color: #34495e;
+        font-weight: bolder;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .comments-section a {
+        text-decoration: none;
+        color: #1abc9c;
+        font-size: 16px;
+    }
+
+    .comment {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 15px 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment strong {
+        color: #1abc9c;
+        font-size: 16px;
+    }
+
+    .comment p {
+        color: #2c3e50;
+        font-size: 14px;
+    }
+
+    .buttons {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .buttons button {
+        background-color: #8e44ad;
+        font-size: 16px;
+        padding: 12px 20px;
+        border-radius: 25px;
+        margin: 10px;
+        border: none;
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+
+    .buttons button:hover {
+        background-color: #9b59b6;
+    }
+
+    .button-class {
+        background-color: #f39c12;
+        color: white;
+        font-size: 16px;
+        padding: 12px 20px;
+        border-radius: 25px;
+        margin: 10px;
+    }
+
+    .button-class:hover {
+        background-color: #e67e22;
+    }
+
+    .delete-btn, .edit-btn {
+        background-color: #e74c3c;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        margin: 10px;
+    }
+
+    .delete-btn:hover, .edit-btn:hover {
+        background-color: #c0392b;
+    }
+
+    .btn-secondary {
+        background-color: #95a5a6;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 25px;
+        margin: 10px;
+        transition: background-color 0.3s;
+    }
+ 
+
+    .btn-secondary:hover {
+        background-color: #7f8c8d;
+    }
+
+    .no-profile {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    .float-end {
+        float: right;
+    }
+
+    @media (max-width: 768px) {
+        .profile-block {
+            width: 90%;
+        }
+
+        .title-heading {
+            font-size: 28px;
+        }
+
+        .post-image {
+            width: 100%;
+        }
+    }
+</style>
+
+{% endblock body %}
